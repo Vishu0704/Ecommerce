@@ -17,8 +17,8 @@ const Womens = (props) => {
         <Header onPress={() => props.navigation.goBack()} txt={"Womens"}/>
         <View style={{marginTop:20}}>
           <FlatList
-            numColumns={2}
-            onRefresh={handleRefresh}
+            numColumns={2}         //women
+            onRefresh={handleRefresh}  
             refreshing={loading}
             data={women}
             renderItem={({item}) => (

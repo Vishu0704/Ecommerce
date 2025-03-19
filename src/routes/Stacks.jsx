@@ -18,7 +18,7 @@ const Stacks = () => {
        <Stack.Screen name="Dashboard" component={BottomNavigation} />
         <Stack.Screen name="Details" component={Details} />
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Items" component={Items} />
+        <Stack.Screen name="Items" component={Items} />    
         <Stack.Screen name="Man" component={Man} />
         <Stack.Screen name="Women" component={Womens} />
       </Stack.Navigator>

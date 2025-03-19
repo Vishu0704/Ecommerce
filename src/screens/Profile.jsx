@@ -11,11 +11,11 @@ const Profile = (props) => {
   <View>
     <TouchableOpacity>
   <Image source={require("../utilites/images/ava.png")} style={Styles.img}/>
-  {/* <Image source={require("../utilites/images/pencil.png")} style={Styles.img}/> */}
+  {/* <Image source={require("../utilites/images/pencil.png")} style={Styles.img}/> */}  
   </TouchableOpacity>
   </View>
    <Text style={Styles.txt}>Jenny</Text>
-</View>
+</View>  
 <View style={{marginTop:40}}>
   <Orders txt={"My orders"}/>
   <Orders txt={"Shipping addresses"}/>
