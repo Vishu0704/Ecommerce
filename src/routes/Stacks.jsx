@@ -2,10 +2,9 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screens/Home';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import BottomNavigation from '../bottom/BottomNavigation';  // Bottom Tab Navigation
+import BottomNavigation from '../bottom/BottomNavigation';  
 import Details from '../screens/Details';
 import Items from '../screens/Items';
-import Profile from '../screens/Profile';
 import Man from '../screens/Man';
 import Womens from '../screens/Womens';
 

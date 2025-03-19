@@ -1,17 +1,18 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home';
 import Profile from '../screens/Profile';
-import {Image} from 'react-native';
+import { Image } from 'react-native';
 import Shop from '../screens/Shop';
 import Cart from '../screens/Cart';
 import Favorite from '../screens/Favorite';
 
 const Bottom = createBottomTabNavigator();
 
-const BottomNavigation = () => {
+const BottomNavigation = ({ route }) => {
   return (
     <Bottom.Navigator
+      initialRouteName={route.params?.screen || 'Home'} 
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -22,13 +23,14 @@ const BottomNavigation = () => {
           justifyContent: 'center',
           alignItems: 'center',
         },
-      }}>
+      }}
+    >
       <Bottom.Screen
         name="Home"
         component={Home}
         options={{
           tabBarActiveTintColor: 'red',
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <Image
               source={require('../utilites/images/1.png')}
               style={{
@@ -45,7 +47,7 @@ const BottomNavigation = () => {
         component={Shop}
         options={{
           tabBarActiveTintColor: 'red',
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <Image
               source={require('../utilites/images/2.png')}
               style={{
@@ -62,7 +64,7 @@ const BottomNavigation = () => {
         component={Cart}
         options={{
           tabBarActiveTintColor: 'red',
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <Image
               source={require('../utilites/images/3.png')}
               style={{
@@ -79,7 +81,7 @@ const BottomNavigation = () => {
         component={Favorite}
         options={{
           tabBarActiveTintColor: 'red',
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <Image
               source={require('../utilites/images/4.png')}
               style={{
@@ -91,12 +93,13 @@ const BottomNavigation = () => {
           ),
         }}
       />
+      {/* Profile screen in Bottom Tabs */}
       <Bottom.Screen
         name="Profile"
         component={Profile}
         options={{
           tabBarActiveTintColor: 'red',
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <Image
               source={require('../utilites/images/5.png')}
               style={{
