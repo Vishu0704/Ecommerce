@@ -49,3 +49,21 @@ export const Category = ({onPress,Source,txt})=>{
       </View>
     )
 }
+
+export const Orders = ({onPress,txt})=>{
+    return(
+        <TouchableOpacity onPress={onPress}>
+        <View style={{flexDirection:"row",alignItems:'center',justifyContent:'space-between',width:'100%',
+        borderBottomWidth:0.5,
+        borderColor:'lightgrey',
+        height:80
+        }}>
+             <Text style={{fontSize:22,fontWeight:'600'}}>{txt}</Text>
+            
+            <Image source={require("../images/next.png")} style={{height:22,width:50}} resizeMode="contain"/>
+          
+           
+        </View>
+        </TouchableOpacity>
+    )
+}

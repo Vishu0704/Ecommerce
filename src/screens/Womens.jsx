@@ -15,7 +15,7 @@ const Womens = (props) => {
   return (
     <SafeAreaView style={Styles.main}>
         <Header onPress={() => props.navigation.goBack()} txt={"Womens"}/>
-        <View>
+        <View style={{marginTop:20}}>
           <FlatList
             numColumns={2}
             onRefresh={handleRefresh}

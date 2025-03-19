@@ -10,7 +10,7 @@ const DrawerNavigation = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
-        <Drawer.Screen name="Home" component={Stacks} />
+        <Drawer.Screen name="Home" component={Stacks}  options={{headerShown:false}}/>
         <Drawer.Screen name="Profile" component={Stacks} />
       </Drawer.Navigator>
     </NavigationContainer>
