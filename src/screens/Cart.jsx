@@ -1,12 +1,22 @@
-import { View, Text } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet } from 'react-native'
 import React from 'react'
+import { Header } from '../utilites/helper/Helper'
 
-const Cart = () => {
+const Cart = (props) => {
   return (
-    <View style={{flex:1,backgroundColor:'blue'}}>
+    <SafeAreaView style={Styles.main}>
+      <Header txt={"My Cart"} onPress={()=>props.navigation.goBack()}/>
+    <View >
       <Text>Cart</Text>
     </View>
+    </SafeAreaView>
   )
 }
 
 export default Cart
+
+const Styles =StyleSheet.create({
+  main:{
+    flex:1
+  }
+})

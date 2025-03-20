@@ -1,194 +1,202 @@
 import {
   View,
   Text,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {height, width} from '../utilites/helper/Helper';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {man} from '../../Store/Mens';
 import {products} from '../../Store/All';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
-import BottomNavigation from '../bottom/BottomNavigation';
+import {useDispatch} from 'react-redux';
+import {addMyProducts} from '../../Redux/MyProductSlice';
 
-const Home = props => {
+const Home = (props) => {
+  const [count,setCount]=useState(0)
+  //  const dispatch = useDispatch();
+  console.log('Dispatching products...');
+  // useEffect(() => {
+  //   console.log('Dispatching products...');
+  //   products.forEach(item => {
+  //     dispatch(addMyProducts(item));
+  //   });
+  // }, []);
+  const handlePress = () => {
+    console.log(count); 
+    setCount(prevCount => prevCount + 1);
+    console.log(count); 
+   
+  };
+
   return (
-    
-    
-      <ScrollView style={Styles.main}>
-        
-        <View>
-          <Image
-            source={require('../utilites/images/6.png')}
-            style={Styles.img}
-            resizeMode="contain"
-          />
-          <View style={{position: 'absolute', bottom: 50, marginLeft: 10}}>
-            <Text style={Styles.txt}>Fashion</Text>
-            <Text style={Styles.txt}>Sale</Text>
-            <TouchableOpacity style={Styles.check_btn}>
-              <Text style={{color: 'white', fontWeight: '600'}}>Check Now</Text>
-            </TouchableOpacity>
-          </View>
+    <ScrollView style={Styles.main}>
+      <View>
+        <Image
+          source={require('../utilites/images/6.png')}
+          style={Styles.img}
+          resizeMode="contain"
+        />
+        <Text>{count}</Text>
+        <View style={{position: 'absolute', bottom: 50, marginLeft: 10}}>
+          <Text style={Styles.txt}>Fashion</Text>
+          <Text style={Styles.txt}>Sale</Text>
+          <TouchableOpacity style={Styles.check_btn} onPress={()=>handlePress()}>
+            <Text style={{color: 'white', fontWeight: '600'}}>Check Now</Text>
+          </TouchableOpacity>
         </View>
+      </View>
 
-        <View style={Styles.V1}>
-          <View style={Styles.V2}>
-            <Text style={Styles.txt_new}>New</Text>
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate('Items')}>
-              <Text style={Styles.txt_view}>View All</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={Styles.txt_view}>You’ve never seen it before!</Text>
+      <View style={Styles.V1}>
+        <View style={Styles.V2}>
+          <Text style={Styles.txt_new}>New</Text>
+          <TouchableOpacity onPress={() => props.navigation.navigate('Items')}>
+            <Text style={Styles.txt_view}>View All</Text>
+          </TouchableOpacity>
         </View>
+        <Text style={Styles.txt_view}>You’ve never seen it before!!!!!</Text>
+      </View>
 
-        <View>
-          <SwiperFlatList
-            index={2}
-            data={products}
-            renderItem={({item}) => (
-              <View>
-                <TouchableOpacity
-                  style={Styles.touch_detail}
-                  onPress={() => {
-                    props.navigation.navigate('Details', {data: item});
-                  }}>
-                  <Image
-                    source={{uri: item.image}}
-                    style={Styles.image}
-                    resizeMode="contain"
-                  />
-                  <Text style={Styles.title}>{item.title}</Text>
-                  <Text style={Styles.price}>${item.price}</Text>
-                </TouchableOpacity>
-                <View style={Styles.V3}>
-                  <Text style={Styles.new}>New</Text>
-                </View>
+      <View>
+        <SwiperFlatList
+          index={2}
+          data={products}
+          renderItem={({item}) => (
+            <View>
+              <TouchableOpacity
+                style={Styles.touch_detail}
+                onPress={() => {
+                  props.navigation.navigate('Details', {data: item});
+                }}>
+                <Image
+                  source={{uri: item.image}}
+                  style={Styles.image}
+                  resizeMode="contain"
+                />
+                <Text style={Styles.title}>{item.title}</Text>
+                <Text style={Styles.price}>${item.price}</Text>
+              
+              </TouchableOpacity>
+              <View style={Styles.V3}>
+                <Text style={Styles.new}>New</Text>
               </View>
-            )}
-          />
+            </View>
+          )}
+        />
+      </View>
+      <View>
+        <Image
+          source={require('../utilites/images/7.png')}
+          style={Styles.img1}
+          resizeMode="contain"
+        />
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 20,
+            marginLeft: 10,
+            flexDirection: 'row',
+          }}>
+          <Text style={Styles.txt1}>Street</Text>
+          <Text style={Styles.txt1}>clothes</Text>
         </View>
-        <View>
+      </View>
+      <View style={Styles.V1}>
+        <View style={Styles.V2}>
+          <Text style={Styles.txt_new}>Sale</Text>
+          <TouchableOpacity onPress={() => props.navigation.navigate('Items')}>
+            <Text style={Styles.txt_view}>View All</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={Styles.txt_view}>Super summer sale</Text>
+      </View>
+      <View>
+        <SwiperFlatList
+          index={2}
+          data={products}
+          renderItem={({item}) => (
+            <View>
+              <TouchableOpacity
+                style={Styles.touch_detail}
+                onPress={() => {
+                  props.navigation.navigate('Details', {data: item});
+                }}>
+                <Image
+                  source={{uri: item.image}}
+                  style={Styles.image}
+                  resizeMode="contain"
+                />
+                <Text style={Styles.title}>{item.title}</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={Styles.price2}>$100</Text>
+                  <Text style={Styles.price1}>${item.price}</Text>
+                </View>
+              </TouchableOpacity>
+              <View style={Styles.V4}>
+                <Text style={Styles.new}>-60%</Text>
+              </View>
+            </View>
+          )}
+        />
+      </View>
+      <View>
+        <TouchableOpacity>
           <Image
-            source={require('../utilites/images/7.png')}
-            style={Styles.img1}
-            resizeMode="contain"
+            source={require('../utilites/images/8.png')}
+            style={Styles.img2}
           />
           <View
             style={{
               position: 'absolute',
               bottom: 20,
-              marginLeft: 10,
               flexDirection: 'row',
+              right: 5,
             }}>
-            <Text style={Styles.txt1}>Street</Text>
-            <Text style={Styles.txt1}>clothes</Text>
+            <Text style={Styles.txt1}>New</Text>
+            <Text style={Styles.txt1}>Collection</Text>
           </View>
-        </View>
-        <View style={Styles.V1}>
-          <View style={Styles.V2}>
-            <Text style={Styles.txt_new}>Sale</Text>
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate('Items')}>
-              <Text style={Styles.txt_view}>View All</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={Styles.txt_view}>Super summer sale</Text>
-        </View>
-        <View>
-          <SwiperFlatList
-            index={2}
-            data={products}
-            renderItem={({item}) => (
-              <View>
-                <TouchableOpacity
-                  style={Styles.touch_detail}
-                  onPress={() => {
-                    props.navigation.navigate('Details', {data: item});
-                  }}>
-                  <Image
-                    source={{uri: item.image}}
-                    style={Styles.image}
-                    resizeMode="contain"
-                  />
-                  <Text style={Styles.title}>{item.title}</Text>
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={Styles.price2}>$100</Text>
-                    <Text style={Styles.price1}>${item.price}</Text>
-                  </View>
-                </TouchableOpacity>
-                <View style={Styles.V4}>
-                  <Text style={Styles.new}>-60%</Text>
-                </View>
-              </View>
-            )}
-          />
-        </View>
+        </TouchableOpacity>
+      </View>
+      <View style={{flexDirection: 'row'}}>
         <View>
           <TouchableOpacity>
-            <Image
-              source={require('../utilites/images/8.png')}
-              style={Styles.img2}
-            />
             <View
               style={{
-                position: 'absolute',
-                bottom: 20,
-                flexDirection: 'row',
-                right: 5,
+                height: 187,
+                width: width / 2,
+                justifyContent: 'center',
               }}>
-              <Text style={Styles.txt1}>New</Text>
-              <Text style={Styles.txt1}>Collection</Text>
+              <Text style={Styles.txt_sale}> Summer</Text>
+              <Text style={Styles.txt_sale}> Sale</Text>
             </View>
           </TouchableOpacity>
-        </View>
-        <View style={{flexDirection: 'row'}}>
           <View>
             <TouchableOpacity>
+              <Image
+                source={require('../utilites/images/11.png')}
+                style={Styles.img4}
+              />
               <View
                 style={{
-                  height: 187,
-                  width: width / 2,
-                  justifyContent: 'center',
+                  position: 'absolute',
+                  bottom: 20,
+                  flexDirection: 'row',
+                  left: 5,
                 }}>
-                <Text style={Styles.txt_sale}> Summer</Text>
-                <Text style={Styles.txt_sale}> Sale</Text>
+                <Text style={Styles.txt1}>Black!</Text>
               </View>
             </TouchableOpacity>
-            <View>
-              <TouchableOpacity>
-                <Image
-                  source={require('../utilites/images/11.png')}
-                  style={Styles.img4}
-                />
-                <View
-                  style={{
-                    position: 'absolute',
-                    bottom: 20,
-                    flexDirection: 'row',
-                    left: 5,
-                  }}>
-                  <Text style={Styles.txt1}>Black!</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
           </View>
-          <TouchableOpacity>
-            <Image
-              source={require('../utilites/images/10.png')}
-              style={Styles.img3}
-            />
-          </TouchableOpacity>
         </View>
-       
-      </ScrollView>
-  
+        <TouchableOpacity>
+          <Image
+            source={require('../utilites/images/10.png')}
+            style={Styles.img3}
+          />
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -197,8 +205,6 @@ export default Home;
 const Styles = StyleSheet.create({
   main: {
     flex: 1,
-  
-
   },
   img: {
     height: height / 1.5,

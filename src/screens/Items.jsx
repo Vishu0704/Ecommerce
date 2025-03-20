@@ -2,6 +2,7 @@ import { View, Text, SafeAreaView, StyleSheet, FlatList,TouchableOpacity,Image }
 import React, { useState } from 'react'
 import { Header, width } from '../utilites/helper/Helper'
 import {products} from '../../Store/All';
+import{useSelector} from 'react-redux'
 
 const Items = (props) => {
     const [loading, setLoading] = useState(false);
@@ -11,7 +12,11 @@ const Items = (props) => {
           setLoading(false);
         }, 1000);
       };
+      console.log('Dispatching products...');
     
+const myProducts =useSelector(state =>state.product)
+console.log(",,,,,",myProducts);
+
   return (
     <SafeAreaView style={Styles.main}>
         <Header onPress={() => props.navigation.goBack()} txt={"Products"}/>
@@ -22,9 +27,9 @@ const Items = (props) => {
             refreshing={loading}
             data={products}
             renderItem={({item}) => (
-              <View>
+              <View  style={Styles.touch_detail}>
                 <TouchableOpacity
-                  style={Styles.touch_detail}
+                 
                   onPress={() => {
                     props.navigation.navigate('Details', {data: item});
                   }}>
@@ -33,9 +38,10 @@ const Items = (props) => {
                     style={Styles.image1}
                     resizeMode="contain"
                   />
+                   </TouchableOpacity>
                   <Text style={Styles.title1}>{item.title}</Text>
                   <Text style={Styles.price}>${item.price}</Text>
-                </TouchableOpacity>
+               
               </View>
             )}
           />

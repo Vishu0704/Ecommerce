@@ -1,12 +1,15 @@
-import './gesture-handler.native'
-import React from 'react'
-import Stacks from './src/routes/Stacks'
-import DrawerNavigation from './src/Drawer/DrawerNavigation'
+import './gesture-handler.native';
+import React from 'react';
+import DrawerNavigation from './src/Drawer/DrawerNavigation';
+import {Provider} from 'react-redux';
+import {mystore} from './Redux/MyStore';
 
 const App = () => {
   return (
-   <DrawerNavigation/>
-  )
-}
+    <Provider store={mystore}>
+      <DrawerNavigation />
+    </Provider>
+  );
+};
 
-export default App
+export default App;

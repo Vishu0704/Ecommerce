@@ -12,7 +12,7 @@ import React, {useState} from 'react';
 import {Header, width} from '../utilites/helper/Helper';
 import {products} from '../../Store/All';
 
-const Details = props => {
+const Details =( props) => {
   const data = props.route.params.data;
   const [fav, setFav] = useState(false);
 
@@ -23,7 +23,6 @@ const Details = props => {
   return (
     <SafeAreaView style={Styles.main}>
       <ScrollView>
-        
         <Header onPress={() => props.navigation.goBack()} />
 
         <View>
@@ -58,9 +57,33 @@ const Details = props => {
         <TouchableOpacity style={Styles.check_btn}>
           <Text style={{color: 'white', fontWeight: '600'}}>Add To Cart</Text>
         </TouchableOpacity>
+        {data.qty == 0 ? null : (
+          <View style={Styles.V4}>
+            <TouchableOpacity style={Styles.btn2}>
+              <Text style={Styles.btntxt}>+</Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                borderLeftWidth: 1,
+                borderRightWidth: 1,
+                height: 35,
+                width: 35,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#f5f5f5',
+              }}>
+              <Text>{data.qty}</Text>
+            </View>
+            <TouchableOpacity style={Styles.btn2}>
+              <Text style={Styles.btntxt}>-</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         <View style={Styles.V2}>
           <Text style={Styles.txt_new}>You can also like this</Text>
         </View>
+
         <View>
           <FlatList
             numColumns={2}
@@ -94,7 +117,6 @@ export default Details;
 const Styles = StyleSheet.create({
   main: {
     flex: 1,
-    
   },
   image: {
     height: width / 1,
@@ -184,5 +206,23 @@ const Styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     margin: 10,
     height: width / 1.5,
+  },
+  V4: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 15,
+    borderWidth: 1,
+    width: width / 2,
+    justifyContent: 'space-evenly',
+    alignSelf: 'center',
+  },
+  btntxt: {
+    color: 'black',
+  },
+  btn2: {
+    height: 35,
+    width: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

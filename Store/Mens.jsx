@@ -9,7 +9,8 @@ const man = [
         "rating": {
             "rate": 2.1,
             "count": 430
-        }
+        },
+        "qty":0
     },
     {
         "id": 2,
@@ -21,7 +22,8 @@ const man = [
         "rating": {
             "rate": 4.1,
             "count": 259
-        }
+        },
+        "qty":0
     },
     {
         "id": 3,
@@ -33,7 +35,8 @@ const man = [
         "rating": {
             "rate": 4.7,
             "count": 500
-        }
+        },
+        "qty":0
     },
     {
         "id": 4,
@@ -45,7 +48,8 @@ const man = [
         "rating": {
             "rate": 2.1,
             "count": 430
-        }
+        },
+        "qty":0
     },
     {
         "id": 5,
@@ -69,7 +73,8 @@ const man = [
         "rating": {
             "rate": 4.1,
             "count": 259
-        }
+        },
+        "qty":0
     },
     {
         "id": 7,
@@ -81,7 +86,8 @@ const man = [
         "rating": {
             "rate": 4.7,
             "count": 500
-        }
+        },
+        "qty":0
     },
     {
         "id": 8,
@@ -93,7 +99,8 @@ const man = [
         "rating": {
             "rate": 2.1,
             "count": 430
-        }
+        },
+        "qty":0
     }
 ];
 

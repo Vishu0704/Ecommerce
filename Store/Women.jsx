@@ -9,7 +9,9 @@
         "rating": {
             "rate": 2.6,
             "count": 235
-        }
+        },
+        "qty":0,
+        
     },
     {
         "id": 16,
@@ -21,7 +23,8 @@
         "rating": {
             "rate": 2.9,
             "count": 340
-        }
+        },
+        "qty":0
     },
     {
         "id": 17,
@@ -33,7 +36,8 @@
         "rating": {
             "rate": 3.8,
             "count": 679
-        }
+        },
+        "qty":0
     },
     {
         "id": 18,
@@ -45,7 +49,8 @@
         "rating": {
             "rate": 4.7,
             "count": 130
-        }
+        },
+        "qty":0
     },
     {
         "id": 19,
@@ -57,7 +62,8 @@
         "rating": {
             "rate": 4.5,
             "count": 146
-        }
+        },
+        "qty":0
     },
     {
         "id": 20,
@@ -69,7 +75,8 @@
         "rating": {
             "rate": 3.6,
             "count": 145
-        }
+        },
+        "qty":0
     },{
         "id": 21,
         "title": "BIYLACLESEN Women's Snowboard Jacket Winter Coats",
@@ -80,7 +87,8 @@
         "rating": {
             "rate": 2.6,
             "count": 235
-        }
+        },
+        "qty":0
     },
     {
         "id": 22,
@@ -92,7 +100,8 @@
         "rating": {
             "rate": 2.9,
             "count": 340
-        }
+        },
+        "qty":0
     },
     {
         "id": 23,
@@ -104,7 +113,8 @@
         "rating": {
             "rate": 3.8,
             "count": 679
-        }
+        },
+        "qty":0
     },
     {
         "id": 24,
@@ -116,7 +126,8 @@
         "rating": {
             "rate": 4.7,
             "count": 130
-        }
+        },
+        "qty":0
     },
     {
         "id": 25,
@@ -128,7 +139,8 @@
         "rating": {
             "rate": 4.5,
             "count": 146
-        }
+        },
+        "qty":0
     },
     {
         "id": 26,
@@ -140,7 +152,8 @@
         "rating": {
             "rate": 3.6,
             "count": 145
-        }
+        },
+        "qty":0
     }
 ]
 export { women};
