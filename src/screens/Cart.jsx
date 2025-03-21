@@ -6,13 +6,20 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
-import React, { useState } from 'react';
-import { Header, width } from '../utilites/helper/Helper';
-import { useSelector, useDispatch } from 'react-redux';
-import { addProductToMyCart, removeProductFromCart, clearCart } from '../../Redux/MyCartSlice';
+import React, {useState} from 'react';
+import {Header, width} from '../utilites/helper/Helper';
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  addProductToMyCart,
+  removeProductFromCart,
+  clearCart,
+} from '../../Redux/MyCartSlice';
+import Modal from 'react-native-modal';
 
 const Cart = props => {
+  const [isModalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const myCart = useSelector(state => state.cart);
@@ -25,78 +32,130 @@ const Cart = props => {
     }, 1000);
   };
 
-  
   const getTotal = () => {
-    return myCart.reduce((total, item) => total + item.qty * item.price, 0).toFixed(2);
+    return myCart
+      .reduce((total, item) => total + item.qty * item.price, 0)
+      .toFixed(2);
+  };
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  const yesModal = () => {
+    dispatch(clearCart());
+    setModalVisible(!isModalVisible);
   };
 
   return (
     <SafeAreaView style={Styles.main}>
-      <Header onPress={() => props.navigation.goBack()} txt={'Cart'} />
-      <View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '97%',
+        }}>
+        <Header onPress={() => props.navigation.goBack()} txt={'My Cart'} />
+        <View>
+          {myCart.length > 0 && (
+            <TouchableOpacity onPress={() => toggleModal()}>
+              <Image
+                source={require('../utilites/images/19.png')}
+                style={{height: 25, width: 50}}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+      <View style={{marginBottom: 125}}>
         <FlatList
-          numColumns={2}
+          // numColumns={2}
           onRefresh={handleRefresh}
           refreshing={loading}
           data={myCart}
           keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <View style={Styles.touch_detail}>
-              <View style={{ marginTop: 20 }}>
+              <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity
-                  onPress={() => props.navigation.navigate('Details', { data: item })}
-                >
+                  onPress={() =>
+                    props.navigation.navigate('Details', {data: item})
+                  }>
                   <Image
-                    source={{ uri: item.image }}
+                    source={{uri: item.image}}
                     style={Styles.image1}
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
-                <Text style={Styles.title1}>{item.title}</Text>
-                <Text style={Styles.price}>${item.price}</Text>
-              </View>
+                <View style={{justifyContent: 'center'}}>
+                  <Text style={Styles.title1}>{item.title}</Text>
+                  <Text style={Styles.price}>${item.price}</Text>
 
-       
-              <View style={Styles.qtybtn}>
-                <TouchableOpacity
-                  style={Styles.minus}
-                  onPress={() => dispatch(removeProductFromCart(item))}
-                >
-                  <Text style={Styles.carttxt}>-</Text>
-                </TouchableOpacity>
+                  <View style={Styles.qtybtn}>
+                    <TouchableOpacity
+                      style={Styles.minus}
+                      onPress={() => dispatch(removeProductFromCart(item))}>
+                      <Text style={Styles.carttxt}>-</Text>
+                    </TouchableOpacity>
 
-                <Text>{item.qty}</Text>
+                    <Text>{item.qty}</Text>
 
-                <TouchableOpacity
-                  style={Styles.plus}
-                  onPress={() => dispatch(addProductToMyCart(item))}
-                >
-                  <Text style={Styles.carttxt}>+</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                      style={Styles.plus}
+                      onPress={() => dispatch(addProductToMyCart(item))}>
+                      <Text style={Styles.carttxt}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </View>
           )}
         />
       </View>
 
-     
-      <View style={Styles.totalContainer}>
-        <Text style={Styles.totalText}>Total Price: ${getTotal()}</Text>
-
-     
-        {myCart.length > 0 && (
+      {myCart.length > 0 && (
+        <View style={Styles.V1}>
+          <Text style={Styles.totalText}>Total Price: ${getTotal()}</Text>
           <TouchableOpacity
-            style={Styles.clearCart}
-            onPress={() => dispatch(clearCart())}
-          >
-            <Text style={Styles.clearCartText}>Clear Cart</Text>
+            style={Styles.placeOrder}
+            onPress={() => {
+              Alert.alert('Order Placed!!😂😂😂');
+            }}>
+            <Text style={Styles.placeOrdrTxt}>Place Order</Text>
           </TouchableOpacity>
-        )}
+        </View>
+      )}
 
-        <TouchableOpacity style={Styles.placeOrder}>
-          <Text style={Styles.placeOrderText}>Place Order</Text>
-        </TouchableOpacity>
-      </View>
+      <Modal isVisible={isModalVisible}>
+        <View
+          style={Styles.modal}>
+          <Text style={{fontSize: 19, fontWeight: '500'}}>
+            Are You sure You want To clear Your Cart?
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: 40,
+              justifyContent: 'space-between',
+              width: width / 1.5,
+              alignSelf:'center'
+            }}>
+            <TouchableOpacity onPress={toggleModal} style={Styles.yesno}>
+              <Text style={{fontSize: 19, fontWeight: '500', color: 'white'}}>
+                No
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => yesModal()} style={Styles.yesno}>
+              <Text style={{fontSize: 19, fontWeight: '500', color: 'white'}}>
+                Yes
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      {myCart.length == 0 && (
+      <View style={Styles.empty}>
+        <Text style={Styles.oops}>Oops, cart's empty!☹️</Text>
+      </View>)}
     </SafeAreaView>
   );
 };
@@ -104,7 +163,7 @@ const Cart = props => {
 export default Cart;
 
 const Styles = StyleSheet.create({
-  main: { flex: 1 },
+  main: {flex: 1},
   image1: {
     height: width / 2.5,
     width: width / 2.5,
@@ -114,7 +173,7 @@ const Styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 10,
+    width: width / 2,
   },
   price: {
     fontSize: 14,
@@ -129,10 +188,11 @@ const Styles = StyleSheet.create({
     elevation: 4,
     alignSelf: 'center',
     alignItems: 'center',
-    width: width / 2.25,
+    width: width / 1.1,
     backgroundColor: '#ffffff',
     margin: 10,
-    height: width / 1.3,
+    height: width / 2.3,
+    padding: 10,
   },
   qtybtn: {
     flexDirection: 'row',
@@ -141,8 +201,7 @@ const Styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     height: 50,
-    position: 'absolute',
-    bottom: 2,
+    alignSelf: 'center',
   },
   plus: {
     backgroundColor: 'green',
@@ -160,11 +219,16 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  totalContainer: {
+  V1: {
     position: 'absolute',
-    bottom: 50,
     alignSelf: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: 'lightgrey',
+    width: width,
+    justifyContent: 'space-around',
+    bottom: 1,
+    height: 100,
   },
   totalText: {
     fontSize: 18,
@@ -173,7 +237,7 @@ const Styles = StyleSheet.create({
   },
   clearCart: {
     height: 50,
-    width: 150,
+    width: 120,
     backgroundColor: 'gray',
     justifyContent: 'center',
     alignItems: 'center',
@@ -187,15 +251,38 @@ const Styles = StyleSheet.create({
   },
   placeOrder: {
     height: 50,
-    width: 150,
-    backgroundColor: 'red',
+    width: 120,
+    backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
   },
-  placeOrderText: {
+  placeOrdrTxt: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
+  yesno: {
+    height: 50,
+    width: 75,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: 'black',
+  },modal:{
+    alignSelf: 'center',
+
+    height: width / 2.1,
+    width: width / 1.1,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+  },
+  empty:{
+    alignSelf:'center',
+  },oops:{
+    fontSize:30,
+    fontWeight:'bold'
+  }
 });
