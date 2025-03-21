@@ -12,7 +12,7 @@ const products = [
       rate: 4.1,
       count: 259,
     },
-    qty: 1,
+    qty: 0,
   },
   {
     id: 3,

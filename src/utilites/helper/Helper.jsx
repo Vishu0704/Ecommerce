@@ -10,6 +10,7 @@ export const Header = ({onPress,txt})=>{
             <Image source={require("../images/back.png")} style={{height:22,width:50}} resizeMode="contain"/>
             </TouchableOpacity>
             <Text style={{fontSize:25,fontWeight:'700'}}>{txt}</Text>
+         
         </View>
     )
 }

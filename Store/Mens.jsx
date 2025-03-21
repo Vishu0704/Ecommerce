@@ -61,7 +61,7 @@ const man = [
         "rating": {
             "rate": 2.1,
             "count": 430
-        }
+        },   "qty":0
     },
     {
         "id": 6,

@@ -14,21 +14,21 @@ import {useDispatch} from 'react-redux';
 import {addMyProducts} from '../../Redux/MyProductSlice';
 
 const Home = (props) => {
-  const [count,setCount]=useState(0)
-  //  const dispatch = useDispatch();
-  console.log('Dispatching products...');
-  // useEffect(() => {
-  //   console.log('Dispatching products...');
-  //   products.forEach(item => {
-  //     dispatch(addMyProducts(item));
-  //   });
-  // }, []);
-  const handlePress = () => {
-    console.log(count); 
-    setCount(prevCount => prevCount + 1);
-    console.log(count); 
+  // const [count,setCount]=useState(0)
+    const dispatch = useDispatch();
+  //console.log('Dispatching products...');
+  useEffect(() => {
+    console.log('Dispatching products.>>>>');
+    products.forEach(item => {
+      dispatch(addMyProducts(item));
+    });
+  }, []);
+  // const handlePress = () => {
+    
+  //   setCount(prevCount => prevCount + 1);
+  //   console.log(count); 
    
-  };
+  // };
 
   return (
     <ScrollView style={Styles.main}>
@@ -38,11 +38,11 @@ const Home = (props) => {
           style={Styles.img}
           resizeMode="contain"
         />
-        <Text>{count}</Text>
+        {/* <Text>{count}</Text> */}
         <View style={{position: 'absolute', bottom: 50, marginLeft: 10}}>
           <Text style={Styles.txt}>Fashion</Text>
           <Text style={Styles.txt}>Sale</Text>
-          <TouchableOpacity style={Styles.check_btn} onPress={()=>handlePress()}>
+          <TouchableOpacity style={Styles.check_btn}>
             <Text style={{color: 'white', fontWeight: '600'}}>Check Now</Text>
           </TouchableOpacity>
         </View>
@@ -55,7 +55,7 @@ const Home = (props) => {
             <Text style={Styles.txt_view}>View All</Text>
           </TouchableOpacity>
         </View>
-        <Text style={Styles.txt_view}>You’ve never seen it before!!!!!</Text>
+        <Text style={Styles.txt_view}>You’ve never seen it before!!</Text>
       </View>
 
       <View>
