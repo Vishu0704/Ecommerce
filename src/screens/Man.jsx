@@ -6,10 +6,13 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Header, width} from '../utilites/helper/Helper';
 import {man} from '../../Store/Mens';
+import { useSelector, useDispatch } from 'react-redux';
+import { addProductToMyCart,removeProductFromCart } from '../../Redux/MyCartSlice';
 
 const Man = props => {
   const [loading, setLoading] = useState(false);
@@ -19,61 +22,99 @@ const Man = props => {
       setLoading(false);
     }, 1000);
   };
-
+  const myCart = useSelector(state => state.cart);
+  const isInCart = productId => {
+    return myCart.some(item => item.id === productId);
+  };
+  const dispatch = useDispatch();
   return (
     <SafeAreaView style={Styles.main}>
-      <Header onPress={() => props.navigation.goBack()} txt={'Mens'} />
-      <View style={{marginTop: 20}}>
-        <FlatList
-          numColumns={2}
-          onRefresh={handleRefresh}
-          refreshing={loading}
-          data={man}
-          renderItem={({item}) => (
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '97%' }}>
+        <Header onPress={() => props.navigation.goBack()} txt={'Mens'} />
+        <View>
+          <TouchableOpacity onPress={() => props.navigation.navigate('Cart')}>
+            <Image
+              source={require("../utilites/images/18.png")}
+              style={{ height: 30, width: 50 }}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              backgroundColor: 'lightgrey',
+              borderRadius: 15,
+              position: 'absolute',
+              right: 2,
+              width: 20,
+              height: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+              top: -10,
+            }}
+          >
+            <Text>{myCart.reduce((total, item) => total + item.qty, 0)}</Text>
+          </View>
+        </View>
+      </View>
+      <FlatList
+        numColumns={2}
+        onRefresh={handleRefresh}
+        refreshing={loading}
+        data={man}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => {
+          const inCart = isInCart(item.id);
+
+          return (
             <View style={Styles.touch_detail}>
-              <View style={{marginTop: 20}}>
+              <View style={{ marginTop: 20 }}>
                 <TouchableOpacity
                   onPress={() => {
-                    props.navigation.navigate('Details', {data: item});
-                  }}>
-                  <Image
-                    source={{uri: item.image}}
-                    style={Styles.image1}
-                    resizeMode="contain"
-                  />
+                    props.navigation.navigate('Details', { data: item });
+                  }}
+                >
+                  <Image source={{ uri: item.image }} style={Styles.image1} resizeMode="contain" />
                 </TouchableOpacity>
                 <Text style={Styles.title1}>{item.title}</Text>
                 <Text style={Styles.price}>${item.price}</Text>
               </View>
-              {item.qty == 0 ? (
-                <View
-                  style={{
-                    marginTop: 10,
-                    alignItems: 'center',
-                    height: 50,
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: 2,
-                  }}>
-                  <TouchableOpacity style={Styles.cart}>
+
+            
+              {!inCart ? (
+                <View style={Styles.addToCartContainer}>
+                  <TouchableOpacity
+                    style={Styles.cart}
+                    onPress={() => {
+                      dispatch(addProductToMyCart(item));
+                      Alert.alert('Success', 'Product added to cart successfully!');
+                    }}
+                  >
                     <Text style={Styles.carttxt}>Add To Cart</Text>
                   </TouchableOpacity>
                 </View>
               ) : (
                 <View style={Styles.qtybtn}>
-                  <TouchableOpacity style={Styles.minus}>
-                    <Text style={Styles.carttxt}>-</Text>
-                  </TouchableOpacity>
-                  <Text>{item.qty}</Text>
-                  <TouchableOpacity style={Styles.plus}>
-                    <Text style={Styles.carttxt}>+</Text>
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                  style={Styles.minus}
+                  onPress={() => dispatch(removeProductFromCart(item))}
+                >
+                  <Text style={Styles.carttxt}>-</Text>
+                </TouchableOpacity>
+
+                <Text>{myCart.find(cartItem => cartItem.id === item.id)?.qty || 0}</Text>
+
+                <TouchableOpacity
+                  style={Styles.plus}
+                  onPress={() => dispatch(addProductToMyCart(item))}
+                >
+                  <Text style={Styles.carttxt}>+</Text>
+                </TouchableOpacity>
+              </View>
               )}
             </View>
-          )}
-        />
-      </View>
+          );
+        }}
+      />
     </SafeAreaView>
   );
 };
@@ -108,7 +149,6 @@ const Styles = StyleSheet.create({
     elevation: 4,
     alignSelf: 'center',
     alignItems: 'center',
-
     width: width / 2.25,
     backgroundColor: '#ffffff',
     margin: 10,
@@ -150,5 +190,12 @@ const Styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },addToCartContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+    height: 50,
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 2,
   },
 });

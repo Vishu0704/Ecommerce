@@ -17,12 +17,12 @@ const Home = (props) => {
   // const [count,setCount]=useState(0)
     const dispatch = useDispatch();
   //console.log('Dispatching products...');
-  useEffect(() => {
-    console.log('Dispatching products.>>>>');
-    products.forEach(item => {
-      dispatch(addMyProducts(item));
-    });
-  }, []);
+  // useEffect(() => {
+  //   console.log('Dispatching products.>>>>');
+  //   products.forEach(item => {
+  //     dispatch(addMyProducts(item));
+  //   });
+  // }, []);
   // const handlePress = () => {
     
   //   setCount(prevCount => prevCount + 1);
@@ -42,7 +42,7 @@ const Home = (props) => {
         <View style={{position: 'absolute', bottom: 50, marginLeft: 10}}>
           <Text style={Styles.txt}>Fashion</Text>
           <Text style={Styles.txt}>Sale</Text>
-          <TouchableOpacity style={Styles.check_btn}>
+          <TouchableOpacity style={Styles.check_btn} onPress={() => props.navigation.navigate('Items')}>
             <Text style={{color: 'white', fontWeight: '600'}}>Check Now</Text>
           </TouchableOpacity>
         </View>
@@ -141,7 +141,7 @@ const Home = (props) => {
         />
       </View>
       <View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>props.navigation.navigate('Women')}>
           <Image
             source={require('../utilites/images/8.png')}
             style={Styles.img2}
@@ -160,7 +160,7 @@ const Home = (props) => {
       </View>
       <View style={{flexDirection: 'row'}}>
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity  onPress={() => props.navigation.navigate('Items')}>
             <View
               style={{
                 height: 187,
@@ -172,7 +172,7 @@ const Home = (props) => {
             </View>
           </TouchableOpacity>
           <View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>props.navigation.navigate('Women')}>
               <Image
                 source={require('../utilites/images/11.png')}
                 style={Styles.img4}
@@ -189,7 +189,7 @@ const Home = (props) => {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>props.navigation.navigate('Man')}>
           <Image
             source={require('../utilites/images/10.png')}
             style={Styles.img3}

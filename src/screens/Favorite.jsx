@@ -102,10 +102,10 @@ const Favorite = (props )=> {
 
 
   
-      {/* {myCart.length == 0 && (
+      {myFavourite.length == 0 && (
       <View style={Styles.empty}>
-        <Text style={Styles.oops}>Oops, cart's empty!☹️</Text>
-      </View>)} */}
+        <Text style={Styles.oops}>Your favorites are empty!</Text>
+      </View>)}
     </SafeAreaView>
   );
 };
