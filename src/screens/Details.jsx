@@ -11,7 +11,8 @@ import {
 import React, { useState } from 'react';
 import { Header, width } from '../utilites/helper/Helper';
 import { useSelector, useDispatch } from 'react-redux';
-import { addProductToMyCart, removeProductFromCart } from '../../Redux/MyCartSlice';
+import { addProductToMyCart, removeProductFromCart, } from '../../Redux/MyCartSlice';
+import {addProductToFavourite } from '../../Redux/MyFavourite';
 
 const Details = (props) => {
   const data = props.route.params.data;
@@ -19,9 +20,12 @@ const Details = (props) => {
   const myProducts = useSelector(state => state.product);
 
   const myCart = useSelector(state => state.cart);
+  const myFavourite = useSelector(state => state.favourite);
+  console.log(myFavourite,">>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<");
   
 
   const isInCart = myCart.some(item => item.id === data.id);
+  const isInFavourite = myFavourite.some(item => item.id === data.id);
   
  
   const cartItem = myCart.find(item => item.id === data.id);
@@ -43,18 +47,27 @@ const Details = (props) => {
             style={Styles.image}
             resizeMode="contain"
           />
-
-          <TouchableOpacity style={Styles.fav} onPress={handleFav}>
+{isInFavourite ?(<TouchableOpacity style={Styles.fav} onPress={() => dispatch(addProductToFavourite(data))}>
             <Image
               source={
-                fav
-                  ? require('../utilites/images/12.png')
-                  : require('../utilites/images/13.png')
+               
+                   require('../utilites/images/12.png')
               }
               style={{ height: 22, width: 50 }}
               resizeMode="contain"
             />
-          </TouchableOpacity>
+          </TouchableOpacity>):<TouchableOpacity style={Styles.fav} onPress={() => dispatch(addProductToFavourite(data))}>
+            <Image
+              source={
+             
+                 require('../utilites/images/13.png')
+                 
+              }
+              style={{ height: 22, width: 50 }}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>}
+          
         </View>
 
         <View style={Styles.V1}>
@@ -67,7 +80,6 @@ const Details = (props) => {
         </View>
 
         {isInCart ? (
-          // Quantity Controls (if the product is in the cart)
           <View style={Styles.V4}>
             <TouchableOpacity
               style={Styles.btn2}

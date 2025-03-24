@@ -5,7 +5,7 @@ export const width =Dimensions.get('window').width
 
 export const Header = ({onPress,txt})=>{
     return(
-        <View style={{flexDirection:"row",alignItems:'center',justifyContent:'space-between',width:'60%'}}>
+        <View style={{flexDirection:"row",alignItems:'center',justifyContent:'space-between',width:'68%'}}>
             <TouchableOpacity onPress={onPress}>
             <Image source={require("../images/back.png")} style={{height:22,width:50}} resizeMode="contain"/>
             </TouchableOpacity>

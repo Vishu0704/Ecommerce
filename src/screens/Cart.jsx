@@ -18,7 +18,7 @@ import {
 } from '../../Redux/MyCartSlice';
 import Modal from 'react-native-modal';
 
-const Cart = props => {
+const Cart = (props )=> {
   const [isModalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();

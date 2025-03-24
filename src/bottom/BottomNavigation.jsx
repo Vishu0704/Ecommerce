@@ -6,7 +6,6 @@ import { Image } from 'react-native';
 import Shop from '../screens/Shop';
 import Cart from '../screens/Cart';
 import Favorite from '../screens/Favorite';
-import Stacks from '../routes/Stacks';
 
 const Bottom = createBottomTabNavigator();
 
@@ -26,7 +25,7 @@ const BottomNavigation = ({ route }) => {
         },
       }}
     >
-        <Bottom.Screen
+      <Bottom.Screen
         name="Home"
         component={Home}
         options={{
@@ -43,23 +42,6 @@ const BottomNavigation = ({ route }) => {
           ),
         }}
       />
-      {/* <Bottom.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarActiveTintColor: 'red',
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={require('../utilites/images/1.png')}
-              style={{
-                height: 35,
-                width: 25,
-                tintColor: focused ? 'red' : 'black',
-              }}
-            />
-          ),
-        }}
-      /> */}
       <Bottom.Screen
         name="Shop"
         component={Shop}
@@ -111,7 +93,7 @@ const BottomNavigation = ({ route }) => {
           ),
         }}
       />
-   
+      {/* Profile screen in Bottom Tabs */}
       <Bottom.Screen
         name="Profile"
         component={Profile}
