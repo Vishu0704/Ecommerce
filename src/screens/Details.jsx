@@ -8,12 +8,24 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
-import {Header, width} from '../utilites/helper/Helper';
-import {products} from '../../Store/All';
+import React, { useState } from 'react';
+import { Header, width } from '../utilites/helper/Helper';
+import { useSelector, useDispatch } from 'react-redux';
+import { addProductToMyCart, removeProductFromCart } from '../../Redux/MyCartSlice';
 
-const Details =( props) => {
+const Details = (props) => {
   const data = props.route.params.data;
+  const dispatch = useDispatch();
+  const myProducts = useSelector(state => state.product);
+
+  const myCart = useSelector(state => state.cart);
+  
+
+  const isInCart = myCart.some(item => item.id === data.id);
+  
+ 
+  const cartItem = myCart.find(item => item.id === data.id);
+  
   const [fav, setFav] = useState(false);
 
   const handleFav = () => {
@@ -27,7 +39,7 @@ const Details =( props) => {
 
         <View>
           <Image
-            source={{uri: data.image}}
+            source={{ uri: data.image }}
             style={Styles.image}
             resizeMode="contain"
           />
@@ -39,7 +51,7 @@ const Details =( props) => {
                   ? require('../utilites/images/12.png')
                   : require('../utilites/images/13.png')
               }
-              style={{height: 22, width: 50}}
+              style={{ height: 22, width: 50 }}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -47,20 +59,21 @@ const Details =( props) => {
 
         <View style={Styles.V1}>
           <Text style={Styles.title}>{data.title}</Text>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <Text style={Styles.price2}>$100</Text>
             <Text style={Styles.price1}>${data.price}</Text>
           </View>
           <Text style={Styles.txt}>{data.description}</Text>
         </View>
 
-        <TouchableOpacity style={Styles.check_btn}>
-          <Text style={{color: 'white', fontWeight: '600'}}>Add To Cart</Text>
-        </TouchableOpacity>
-        {data.qty == 0 ? null : (
+        {isInCart ? (
+          // Quantity Controls (if the product is in the cart)
           <View style={Styles.V4}>
-            <TouchableOpacity style={Styles.btn2}>
-              <Text style={Styles.btntxt}>+</Text>
+            <TouchableOpacity
+              style={Styles.btn2}
+              onPress={() => dispatch(removeProductFromCart(data))}
+            >
+              <Text style={Styles.btntxt}>-</Text>
             </TouchableOpacity>
             <View
               style={{
@@ -71,13 +84,27 @@ const Details =( props) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: '#f5f5f5',
-              }}>
-              <Text>{data.qty}</Text>
+              }}
+            >
+              <Text>{cartItem?.qty || 0}</Text>
             </View>
-            <TouchableOpacity style={Styles.btn2}>
-              <Text style={Styles.btntxt}>-</Text>
+            <TouchableOpacity
+              style={Styles.btn2}
+              onPress={() => dispatch(addProductToMyCart(data))}
+            >
+              <Text style={Styles.btntxt}>+</Text>
             </TouchableOpacity>
           </View>
+        ) : (
+         
+          <TouchableOpacity
+            style={Styles.check_btn}
+            onPress={() => {
+              dispatch(addProductToMyCart(data));
+            }}
+          >
+            <Text style={{ color: 'white', fontWeight: '600' }}>Add To Cart</Text>
+          </TouchableOpacity>
         )}
 
         <View style={Styles.V2}>
@@ -87,16 +114,17 @@ const Details =( props) => {
         <View>
           <FlatList
             numColumns={2}
-            data={products}
-            renderItem={({item}) => (
+            data={myProducts}
+            renderItem={({ item }) => (
               <View>
                 <TouchableOpacity
                   style={Styles.touch_detail}
                   onPress={() => {
-                    props.navigation.navigate('Details', {data: item});
-                  }}>
+                    props.navigation.navigate('Details', { data: item });
+                  }}
+                >
                   <Image
-                    source={{uri: item.image}}
+                    source={{ uri: item.image }}
                     style={Styles.image1}
                     resizeMode="contain"
                   />

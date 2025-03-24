@@ -59,7 +59,7 @@ const Items = props => {
               top: -10,
             }}
           >
-            <Text>{myCart.length}</Text>
+            <Text>{myCart.reduce((total, item) => total + item.qty, 0)}</Text>
           </View>
         </View>
       </View>

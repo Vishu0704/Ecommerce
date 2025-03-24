@@ -22,6 +22,7 @@ const Stacks = () => {
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Man" component={Man} />
         <Stack.Screen name="Women" component={Womens} />
+      
       </Stack.Navigator>
     </SafeAreaProvider>
   );
