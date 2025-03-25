@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { Header, width } from '../utilites/helper/Helper';
 import { useSelector, useDispatch } from 'react-redux';
 import { addProductToMyCart,removeProductFromCart } from '../../Redux/MyCartSlice';
+import {products} from '../../Store/All';
 
 
 const Items = props => {
@@ -68,7 +69,7 @@ const Items = props => {
         numColumns={2}
         onRefresh={handleRefresh}
         refreshing={loading}
-        data={myProducts}
+        data={products}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => {
           const inCart = isInCart(item.id);
@@ -94,7 +95,7 @@ const Items = props => {
                     style={Styles.cart}
                     onPress={() => {
                       dispatch(addProductToMyCart(item));
-                      Alert.alert('Success', 'Product added to cart successfully!');
+                    
                     }}
                   >
                     <Text style={Styles.carttxt}>Add To Cart</Text>

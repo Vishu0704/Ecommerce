@@ -86,7 +86,7 @@ const BottomNavigation = ({ route }) => {
               source={require('../utilites/images/4.png')}
               style={{
                 height: 35,
-                width: 35,
+                width: 32,
                 tintColor: focused ? 'red' : 'black',
               }}
             />

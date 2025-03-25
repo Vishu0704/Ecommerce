@@ -24,11 +24,15 @@ const MyCartSlice = createSlice({
         }
       }
     },
+    deleteProductFromCart(state,action){
+      let itemIndex = state.findIndex(item => item.id === action.payload.id);
+      state.splice(itemIndex, 1);
+    },
     clearCart() {
       return []; 
     },
   },
 });
 
-export const { addProductToMyCart, removeProductFromCart, clearCart } = MyCartSlice.actions;
+export const { addProductToMyCart, removeProductFromCart, clearCart,deleteProductFromCart } = MyCartSlice.actions;
 export default MyCartSlice.reducer;

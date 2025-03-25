@@ -15,6 +15,7 @@ import {
   addProductToMyCart,
   removeProductFromCart,
   clearCart,
+  deleteProductFromCart
 } from '../../Redux/MyCartSlice';
 import Modal from 'react-native-modal';
 
@@ -68,7 +69,6 @@ const Cart = (props )=> {
       </View>
       <View style={{marginBottom: 125}}>
         <FlatList
-          // numColumns={2}
           onRefresh={handleRefresh}
           refreshing={loading}
           data={myCart}
@@ -86,7 +86,7 @@ const Cart = (props )=> {
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
-                <View style={{justifyContent: 'center'}}>
+                <View style={{justifyContent: 'center',marginTop:15}}>
                   <Text style={Styles.title1}>{item.title}</Text>
                   <Text style={Styles.price}>${item.price}</Text>
 
@@ -106,6 +106,13 @@ const Cart = (props )=> {
                     </TouchableOpacity>
                   </View>
                 </View>
+              </View>
+              <View style={{position:'absolute',right:5,marginVertical:5}}>
+              <TouchableOpacity
+                    style={Styles.minus}
+                    onPress={() => dispatch(deleteProductFromCart(item))}>
+                  <Image source={require("../utilites/images/close.png")} style={{height:10,width:10}}/>
+                  </TouchableOpacity>
               </View>
             </View>
           )}
@@ -150,6 +157,7 @@ const Cart = (props )=> {
               </Text>
             </TouchableOpacity>
           </View>
+
         </View>
       </Modal>
       {myCart.length == 0 && (

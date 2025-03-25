@@ -10,8 +10,8 @@ import React, {useEffect, useState} from 'react';
 import {height, width} from '../utilites/helper/Helper';
 import {products} from '../../Store/All';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
-import {useDispatch} from 'react-redux';
-import {addMyProducts} from '../../Redux/MyProductSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { addProductToMyCart,removeProductFromCart } from '../../Redux/MyCartSlice';
 
 const Home = (props) => {
   // const [count,setCount]=useState(0)
@@ -29,6 +29,10 @@ const Home = (props) => {
   //   console.log(count); 
    
   // };
+  const myCart = useSelector(state => state.cart);
+  const isInCart = productId => {
+    return myCart.some(item => item.id === productId);
+  };
 
   return (
     <ScrollView style={Styles.main}>
@@ -38,7 +42,7 @@ const Home = (props) => {
           style={Styles.img}
           resizeMode="contain"
         />
-        {/* <Text>{count}</Text> */}
+      
         <View style={{position: 'absolute', bottom: 50, marginLeft: 10}}>
           <Text style={Styles.txt}>Fashion</Text>
           <Text style={Styles.txt}>Sale</Text>
@@ -62,10 +66,15 @@ const Home = (props) => {
         <SwiperFlatList
           index={2}
           data={products}
-          renderItem={({item}) => (
+          renderItem={({item}) => {
+            const inCart = isInCart(item.id);
+
+            return (
             <View>
+            <View    style={Styles.touch_detail}>
+           
               <TouchableOpacity
-                style={Styles.touch_detail}
+             
                 onPress={() => {
                   props.navigation.navigate('Details', {data: item});
                 }}>
@@ -74,15 +83,48 @@ const Home = (props) => {
                   style={Styles.image}
                   resizeMode="contain"
                 />
+                           </TouchableOpacity>
                 <Text style={Styles.title}>{item.title}</Text>
                 <Text style={Styles.price}>${item.price}</Text>
-              
-              </TouchableOpacity>
+                {!inCart ? (
+                <View style={Styles.addToCartContainer}>
+                  <TouchableOpacity
+                    style={Styles.cart}
+                    onPress={() => {
+                      dispatch(addProductToMyCart(item));
+                    
+                    }}
+                  >
+                    <Text style={Styles.carttxt}>Add To Cart</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View style={Styles.qtybtn}>
+                <TouchableOpacity
+                  style={Styles.minus}
+                  onPress={() => dispatch(removeProductFromCart(item))}
+                >
+                  <Text style={Styles.carttxt}>-</Text>
+                </TouchableOpacity>
+
+                <Text>{myCart.find(cartItem => cartItem.id === item.id)?.qty || 0}</Text>
+
+                <TouchableOpacity
+                  style={Styles.plus}
+                  onPress={() => dispatch(addProductToMyCart(item))}
+                >
+                  <Text style={Styles.carttxt}>+</Text>
+                </TouchableOpacity>
+              </View>
+              )}
+                </View>
+   
               <View style={Styles.V3}>
                 <Text style={Styles.new}>New</Text>
               </View>
             </View>
-          )}
+            ); 
+        }}
         />
       </View>
       <View>
@@ -111,14 +153,20 @@ const Home = (props) => {
         </View>
         <Text style={Styles.txt_view}>Super summer sale</Text>
       </View>
+   
       <View>
         <SwiperFlatList
           index={2}
           data={products}
-          renderItem={({item}) => (
+          renderItem={({item}) => {
+            const inCart = isInCart(item.id);
+
+            return (
             <View>
+            <View    style={Styles.touch_detail}>
+           
               <TouchableOpacity
-                style={Styles.touch_detail}
+             
                 onPress={() => {
                   props.navigation.navigate('Details', {data: item});
                 }}>
@@ -127,17 +175,48 @@ const Home = (props) => {
                   style={Styles.image}
                   resizeMode="contain"
                 />
+                           </TouchableOpacity>
                 <Text style={Styles.title}>{item.title}</Text>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={Styles.price2}>$100</Text>
-                  <Text style={Styles.price1}>${item.price}</Text>
+                <Text style={Styles.price}>${item.price}</Text>
+                {!inCart ? (
+                <View style={Styles.addToCartContainer}>
+                  <TouchableOpacity
+                    style={Styles.cart}
+                    onPress={() => {
+                      dispatch(addProductToMyCart(item));
+                    
+                    }}
+                  >
+                    <Text style={Styles.carttxt}>Add To Cart</Text>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
+              ) : (
+                <View style={Styles.qtybtn}>
+                <TouchableOpacity
+                  style={Styles.minus}
+                  onPress={() => dispatch(removeProductFromCart(item))}
+                >
+                  <Text style={Styles.carttxt}>-</Text>
+                </TouchableOpacity>
+
+                <Text>{myCart.find(cartItem => cartItem.id === item.id)?.qty || 0}</Text>
+
+                <TouchableOpacity
+                  style={Styles.plus}
+                  onPress={() => dispatch(addProductToMyCart(item))}
+                >
+                  <Text style={Styles.carttxt}>+</Text>
+                </TouchableOpacity>
+              </View>
+              )}
+                </View>
+   
               <View style={Styles.V4}>
                 <Text style={Styles.new}>-60%</Text>
               </View>
             </View>
-          )}
+            ); 
+        }}
         />
       </View>
       <View>
@@ -242,7 +321,7 @@ const Styles = StyleSheet.create({
   image: {
     height: width / 2,
     width: width / 2,
-    borderRadius: 10,
+    marginTop:25
   },
   title: {
     fontSize: 16,
@@ -263,11 +342,11 @@ const Styles = StyleSheet.create({
     elevation: 4,
     alignSelf: 'center',
     alignItems: 'center',
-    justifyContent: 'center',
+   marginTop:10,
     width: width / 1.9,
     backgroundColor: '#ffffff',
     margin: 10,
-    height: width / 1.35,
+    height: width / 1.15,
   },
   new: {
     color: 'white',
@@ -336,5 +415,49 @@ const Styles = StyleSheet.create({
     marginTop: 5,
     textDecorationLine: 'line-through',
     marginRight: 5,
+  },cart: {
+    backgroundColor: 'black',
+    width: width / 3,
+    height: 35,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  carttxt: {
+    color: 'white',
+  },
+  qtybtn: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: width / 4,
+    marginTop: 10,
+    alignItems: 'center',
+    height: 50,
+    position: 'absolute',
+    bottom: 2,
+  },
+  plus: {
+    backgroundColor: 'green',
+    width: 25,
+    height: 25,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  minus: {
+    backgroundColor: 'red',
+    width: 25,
+    height: 25,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addToCartContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+    height: 50,
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 2,
   },
 });

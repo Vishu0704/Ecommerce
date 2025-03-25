@@ -11,7 +11,7 @@ const Shop = (props) => {
       <View style={{marginTop:40}}>
       <Category Source={require("../utilites/images/14.png")} txt={"Men"} onPress={()=>props.navigation.navigate('Man')}/>
       <Category Source={require("../utilites/images/11.png")} txt={"Women"} onPress={()=>props.navigation.navigate('Women')}/>
-      <Category Source={require("../utilites/images/17.png")} txt={"Kids"}/>
+      <Category Source={require("../utilites/images/100.png")} txt={"Kids"}/>
       </View>
     
     </View>

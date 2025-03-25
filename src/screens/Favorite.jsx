@@ -11,15 +11,14 @@ import {
 import React, {useState} from 'react';
 import {Header, width} from '../utilites/helper/Helper';
 import {useSelector, useDispatch} from 'react-redux';
-import {removeFavouriteFromCart } from '../../Redux/MyFavourite';
+import {removeFavouriteFromCart} from '../../Redux/MyFavourite';
+import { addProductToMyCart } from '../../Redux/MyCartSlice';
 
-const Favorite = (props )=> {
-
+const Favorite = props => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const myFavourite = useSelector(state => state.favourite);
   const myCart = useSelector(state => state.cart);
-
 
   const handleRefresh = () => {
     setLoading(true);
@@ -28,19 +27,27 @@ const Favorite = (props )=> {
     }, 1000);
   };
 
-
-
-  
+  const isInCart = productId => {
+    return myCart.some(item => item.id === productId);
+  };
 
   return (
     <SafeAreaView style={Styles.main}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '97%' }}>
-        <Header onPress={() => props.navigation.goBack()} txt={'My Favourite'} />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '97%',
+        }}>
+        <Header
+          onPress={() => props.navigation.goBack()}
+          txt={'My Favourite'}
+        />
         <View>
           <TouchableOpacity onPress={() => props.navigation.navigate('Cart')}>
             <Image
-              source={require("../utilites/images/18.png")}
-              style={{ height: 30, width: 50 }}
+              source={require('../utilites/images/18.png')}
+              style={{height: 30, width: 50}}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -55,20 +62,21 @@ const Favorite = (props )=> {
               justifyContent: 'center',
               alignItems: 'center',
               top: -10,
-            }}
-          >
+            }}>
             <Text>{myCart.reduce((total, item) => total + item.qty, 0)}</Text>
           </View>
         </View>
       </View>
-      <View style={{marginBottom: 125}}>
+      <View >
         <FlatList
-          
           onRefresh={handleRefresh}
           refreshing={loading}
           data={myFavourite}
           keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => (
+          renderItem={({item}) => {
+            const inCart = isInCart(item.id);
+
+            return(
             <View style={Styles.touch_detail}>
               <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity
@@ -84,28 +92,49 @@ const Favorite = (props )=> {
                 <View style={{justifyContent: 'center'}}>
                   <Text style={Styles.title1}>{item.title}</Text>
                   <Text style={Styles.price}>${item.price}</Text>
-
-               
-                    <TouchableOpacity
-                      style={Styles.minus}
-                      onPress={() => dispatch(removeFavouriteFromCart(item))}>
-                      <Text style={Styles.carttxt}>Remove From Favorite</Text>
-                    </TouchableOpacity>
-
-                  
+                  <View style={{marginTop:5}}>
+                  {!inCart ? (
+                  <View style={Styles.addToCartContainer}>
+                  <TouchableOpacity
+                    style={Styles.cart}
+                    onPress={() => {
+                      dispatch(addProductToMyCart(item));
+                    
+                    }}
+                  >
+                    <Text style={Styles.carttxt}>Add To Cart</Text>
+                  </TouchableOpacity>
+                </View>       ) : (     <View style={Styles.addToCartContainer}>
+                  <TouchableOpacity
+                    style={Styles.cart}
+                    onPress={() => {
+              Alert.alert("Product Already added to th Cart")
+                    
+                    }}
+                  >
+                    <Text style={Styles.carttxt}>Added</Text>
+                  </TouchableOpacity>
+                </View>         )}
+                </View> 
                 </View>
               </View>
-            </View>
-          )}
+              <View style={{position:'absolute',right:5,marginVertical:5}}>
+              <TouchableOpacity
+                    style={Styles.minus}
+                    onPress={() => dispatch(removeFavouriteFromCart(item))}>
+                  <Image source={require("../utilites/images/close.png")} style={{height:10,width:10}}/>
+                  </TouchableOpacity>
+              </View>
+            </View>);
+          }}
         />
       </View>
 
-
-  
       {myFavourite.length == 0 && (
-      <View style={Styles.empty}>
-        <Text style={Styles.oops}>Your favorites are empty!</Text>
-      </View>)}
+        <View style={Styles.empty}>
+          <Text style={Styles.oops}>Your favorites are empty!</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -144,12 +173,9 @@ const Styles = StyleSheet.create({
     height: width / 2.3,
     padding: 10,
   },
-
-  
   minus: {
-    backgroundColor: 'red',
-   
-  padding:10,
+    backgroundColor: 'lightgrey',
+    padding: 10,
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -165,59 +191,27 @@ const Styles = StyleSheet.create({
     bottom: 1,
     height: 100,
   },
-  totalText: {
-    fontSize: 18,
+  oops: {
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  clearCart: {
-    height: 50,
-    width: 120,
-    backgroundColor: 'gray',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  clearCartText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  placeOrder: {
-    height: 50,
-    width: 120,
-    backgroundColor: 'black',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  placeOrdrTxt: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  yesno: {
-    height: 50,
-    width: 75,
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: 'black',
-  },modal:{
-    alignSelf: 'center',
-
-    height: width / 2.1,
-    width: width / 1.1,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
-  },
-  empty:{
+  }, empty:{
     alignSelf:'center',
-  },oops:{
-    fontSize:30,
-    fontWeight:'bold'
-  }
+marginTop:width/2
+  },addToCartContainer: {
+   
+    alignItems: 'center',
+    height: 50,
+    justifyContent: 'center',
+   
+  },cart: {
+    backgroundColor: 'black',
+    width: width / 3,
+    height: 35,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  carttxt: {
+    color: 'white',
+  },
 });

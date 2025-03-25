@@ -41,7 +41,7 @@ export const Category = ({onPress,Source,txt})=>{
                 borderWidth:0.2,
                 borderColor:'lightgrey'
               }}
-            resizeMode="contain"
+          
           />
           <Text style={{fontSize:30,fontWeight:'600',alignSelf:'center',marginLeft:40}}>{txt}</Text>
           </View>

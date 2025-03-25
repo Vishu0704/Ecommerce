@@ -86,7 +86,7 @@ const Man = props => {
                     style={Styles.cart}
                     onPress={() => {
                       dispatch(addProductToMyCart(item));
-                      Alert.alert('Success', 'Product added to cart successfully!');
+                    
                     }}
                   >
                     <Text style={Styles.carttxt}>Add To Cart</Text>
