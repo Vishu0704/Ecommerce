@@ -2,7 +2,8 @@
 #
 .DS_Store
 .*
-!.gitignore
+__tests__/
+
 
 # Xcode
 #
@@ -75,3 +76,5 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+
