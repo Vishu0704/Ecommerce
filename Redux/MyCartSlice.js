@@ -43,8 +43,10 @@ const MyCartSlice = createSlice({
 
       AsyncStorage.setItem('cart', JSON.stringify(state));  
     },
-    clearCart(state) {
-      return []; 
+    clearCart() {
+      AsyncStorage.clear();  
+      return [];  
+
     },
   },
   extraReducers: (builder) => {
