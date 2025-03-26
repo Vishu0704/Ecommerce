@@ -8,11 +8,11 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Header, width} from '../utilites/helper/Helper';
 import {man} from '../../Store/Mens';
 import { useSelector, useDispatch } from 'react-redux';
-import { addProductToMyCart,removeProductFromCart } from '../../Redux/MyCartSlice';
+import { addProductToMyCart,removeProductFromCart,loadCartFromStorage} from '../../Redux/MyCartSlice';
 
 const Man = props => {
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,12 @@ const Man = props => {
   const isInCart = productId => {
     return myCart.some(item => item.id === productId);
   };
+
   const dispatch = useDispatch();
+  useEffect(() => {
+  
+    dispatch(loadCartFromStorage());
+  }, [dispatch]);
   return (
     <SafeAreaView style={Styles.main}>
     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '97%' }}>

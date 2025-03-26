@@ -9,24 +9,23 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { Header, width } from '../utilites/helper/Helper';
-import { useSelector, useDispatch } from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {Header, width} from '../utilites/helper/Helper';
+import {useSelector, useDispatch} from 'react-redux';
 import {
   addProductToMyCart,
   removeProductFromCart,
+  loadCartFromStorage,
 } from '../../Redux/MyCartSlice';
-import { addProductToFavourite } from '../../Redux/MyFavourite';
-import { products } from '../../Store/All';
+import {addProductToFavourite} from '../../Redux/MyFavourite';
+import {products} from '../../Store/All';
 
 const Details = props => {
   const data = props.route.params.data;
   const dispatch = useDispatch();
-  const myProducts = useSelector(state => state.product);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const myCart = useSelector(state => state.cart);
   const myFavourite = useSelector(state => state.favourite);
-
   const isInCart1 = myCart.some(item => item.id === data.id);
   const isInFavourite = myFavourite.some(item => item.id === data.id);
   const cartItem = myCart.find(item => item.id === data.id);
@@ -37,17 +36,20 @@ const Details = props => {
       setLoading(false);
     }, 1000);
   };
+  useEffect(() => {
+    dispatch(loadCartFromStorage());
+  }, [dispatch]);
 
   const isInCart = productId => {
     return myCart.some(item => item.id === productId);
   };
 
-  const handleProductPress = (item) => {
-    setLoading(true); 
+  const handleProductPress = item => {
+    setLoading(true);
     setTimeout(() => {
-      setLoading(false); 
-      props.navigation.navigate('Details', { data: item });
-    }, 2000); 
+      setLoading(false);
+      props.navigation.navigate('Details', {data: item});
+    }, 2000);
   };
 
   return (
@@ -59,11 +61,42 @@ const Details = props => {
       )}
 
       <ScrollView>
-        <Header onPress={() => props.navigation.goBack()} />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '97%',
+            marginVertical: 10,
+          }}>
+          <Header onPress={() => props.navigation.goBack()} />
+          <View>
+            <TouchableOpacity onPress={() => props.navigation.navigate('Cart')}>
+              <Image
+                source={require('../utilites/images/18.png')}
+                style={{height: 30, width: 50}}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: 'lightgrey',
+                borderRadius: 15,
+                position: 'absolute',
+                right: 2,
+                width: 20,
+                height: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                top: -10,
+              }}>
+              <Text>{myCart.reduce((total, item) => total + item.qty, 0)}</Text>
+            </View>
+          </View>
+        </View>
 
         <View>
           <Image
-            source={{ uri: data.image }}
+            source={{uri: data.image}}
             style={Styles.image}
             resizeMode="contain"
           />
@@ -73,7 +106,7 @@ const Details = props => {
               onPress={() => dispatch(addProductToFavourite(data))}>
               <Image
                 source={require('../utilites/images/12.png')}
-                style={{ height: 22, width: 50 }}
+                style={{height: 22, width: 50}}
                 resizeMode="contain"
               />
             </TouchableOpacity>
@@ -83,7 +116,7 @@ const Details = props => {
               onPress={() => dispatch(addProductToFavourite(data))}>
               <Image
                 source={require('../utilites/images/13.png')}
-                style={{ height: 22, width: 50 }}
+                style={{height: 22, width: 50}}
                 resizeMode="contain"
               />
             </TouchableOpacity>
@@ -92,7 +125,7 @@ const Details = props => {
 
         <View style={Styles.V1}>
           <Text style={Styles.title}>{data.title}</Text>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <Text style={Styles.price2}>$100</Text>
             <Text style={Styles.price1}>${data.price}</Text>
           </View>
@@ -130,7 +163,7 @@ const Details = props => {
             onPress={() => {
               dispatch(addProductToMyCart(data));
             }}>
-            <Text style={{ color: 'white', fontWeight: '600' }}>Add To Cart</Text>
+            <Text style={{color: 'white', fontWeight: '600'}}>Add To Cart</Text>
           </TouchableOpacity>
         )}
 
@@ -145,17 +178,15 @@ const Details = props => {
             refreshing={loading}
             data={products}
             keyExtractor={item => item.id.toString()}
-            renderItem={({ item }) => {
+            renderItem={({item}) => {
               const inCart = isInCart(item.id);
 
               return (
                 <View style={Styles.touch_detail}>
-                  <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity
-                      onPress={() => handleProductPress(item)} 
-                    >
+                  <View style={{marginTop: 20}}>
+                    <TouchableOpacity onPress={() => handleProductPress(item)}>
                       <Image
-                        source={{ uri: item.image }}
+                        source={{uri: item.image}}
                         style={Styles.image1}
                         resizeMode="contain"
                       />

@@ -8,10 +8,10 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Header, width } from '../utilites/helper/Helper';
 import { useSelector, useDispatch } from 'react-redux';
-import { addProductToMyCart,removeProductFromCart } from '../../Redux/MyCartSlice';
+import { addProductToMyCart,removeProductFromCart,loadCartFromStorage } from '../../Redux/MyCartSlice';
 import {products} from '../../Store/All';
 
 
@@ -20,7 +20,6 @@ const Items = props => {
   const dispatch = useDispatch();
 
 
-  const myProducts = useSelector(state => state.product);
   const myCart = useSelector(state => state.cart);
 
   const handleRefresh = () => {
@@ -33,7 +32,10 @@ const Items = props => {
   const isInCart = productId => {
     return myCart.some(item => item.id === productId);
   };
-
+  useEffect(() => {
+  
+    dispatch(loadCartFromStorage());
+  }, [dispatch]);
   return (
     <SafeAreaView style={Styles.main}>
     

@@ -5,13 +5,15 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {height, width} from '../utilites/helper/Helper';
 import {products} from '../../Store/All';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import { useSelector, useDispatch } from 'react-redux';
-import { addProductToMyCart,removeProductFromCart } from '../../Redux/MyCartSlice';
+import { addProductToMyCart,removeProductFromCart,loadCartFromStorage } from '../../Redux/MyCartSlice';
+
 
 const Home = (props) => {
   // const [count,setCount]=useState(0)
@@ -30,9 +32,20 @@ const Home = (props) => {
    
   // };
   const myCart = useSelector(state => state.cart);
+  console.log(myCart);
   const isInCart = productId => {
     return myCart.some(item => item.id === productId);
   };
+  useEffect(() => {
+  
+    dispatch(loadCartFromStorage());
+  }, [dispatch]);
+
+
+
+
+
+  
 
   return (
     <ScrollView style={Styles.main}>

@@ -1,4 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+export const loadCartFromStorage = createAsyncThunk('cart/loadCart', async () => {
+  const cartData = await AsyncStorage.getItem('cart');
+  return cartData ? JSON.parse(cartData) : [];
+});
 
 const MyCartSlice = createSlice({
   name: 'cart',
@@ -12,6 +19,8 @@ const MyCartSlice = createSlice({
       } else {
         state[itemIndex].qty += 1;
       }
+
+      AsyncStorage.setItem('cart', JSON.stringify(state)); 
     },
     removeProductFromCart(state, action) {
       let itemIndex = state.findIndex(item => item.id === action.payload.id);
@@ -23,16 +32,27 @@ const MyCartSlice = createSlice({
           state.splice(itemIndex, 1);
         }
       }
+
+      AsyncStorage.setItem('cart', JSON.stringify(state));  
     },
-    deleteProductFromCart(state,action){
+    deleteProductFromCart(state, action) {
       let itemIndex = state.findIndex(item => item.id === action.payload.id);
-      state.splice(itemIndex, 1);
+      if (itemIndex !== -1) {
+        state.splice(itemIndex, 1);
+      }
+
+      AsyncStorage.setItem('cart', JSON.stringify(state));  
     },
-    clearCart() {
+    clearCart(state) {
       return []; 
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(loadCartFromStorage.fulfilled, (state, action) => {
+      return action.payload; 
+    });
+  },
 });
 
-export const { addProductToMyCart, removeProductFromCart, clearCart,deleteProductFromCart } = MyCartSlice.actions;
+export const { addProductToMyCart, removeProductFromCart, clearCart, deleteProductFromCart } = MyCartSlice.actions;
 export default MyCartSlice.reducer;

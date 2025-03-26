@@ -8,11 +8,11 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Header, width} from '../utilites/helper/Helper';
 import {useSelector, useDispatch} from 'react-redux';
 import {removeFavouriteFromCart} from '../../Redux/MyFavourite';
-import { addProductToMyCart } from '../../Redux/MyCartSlice';
+import { addProductToMyCart,loadCartFromStorage } from '../../Redux/MyCartSlice';
 
 const Favorite = props => {
   const [loading, setLoading] = useState(false);
@@ -31,6 +31,10 @@ const Favorite = props => {
     return myCart.some(item => item.id === productId);
   };
 
+  useEffect(() => {
+  
+    dispatch(loadCartFromStorage());
+  }, [dispatch]);
   return (
     <SafeAreaView style={Styles.main}>
       <View
@@ -108,7 +112,7 @@ const Favorite = props => {
                   <TouchableOpacity
                     style={Styles.cart}
                     onPress={() => {
-              Alert.alert("Product Already added to th Cart")
+              Alert.alert("Product Already added to the Cart")
                     
                     }}
                   >
@@ -175,7 +179,7 @@ const Styles = StyleSheet.create({
   },
   minus: {
     backgroundColor: 'lightgrey',
-    padding: 10,
+    padding: 5,
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
